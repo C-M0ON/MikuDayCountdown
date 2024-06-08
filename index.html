@@ -1,9 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>TestWebsite</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to Miku Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        #countdown {
+            font-size: 2em;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <h1>Hey its star2!</h1>
+    <div id="countdown"></div>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let nextMikuDay = new Date(`March 9, ${currentYear} 00:00:00`);
+            const timeZone = 'America/New_York';
+
+            // If the target date has already passed this year, set the target to next year
+            if (now > nextMikuDay) {
+                nextMikuDay = new Date(`March 9, ${currentYear + 1} 00:00:00`);
+            }
+
+            // Calculate the difference in milliseconds
+            const timeDifference = nextMikuDay - now;
+            const months = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((timeDifference % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML = `${months} months ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+
+            // If the countdown is finished, reset to next year's Miku Day
+            if (timeDifference < 0) {
+                nextMikuDay = new Date(`March 9, ${currentYear + 1} 00:00:00`);
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // initial call
+    </script>
 </body>
 </html>
